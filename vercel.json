@@ -2,15 +2,10 @@
   "version": 2,
   "functions": {
     "api/index.py": {
-      "runtime": "python3.12",
       "maxDuration": 30
     }
   },
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/index.py"
-    },
     {
       "src": "/optimize",
       "dest": "/api/index.py"
