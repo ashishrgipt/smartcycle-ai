@@ -1,16 +1,16 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "frontend/**/*",
-      "use": "@vercel/static"
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.12",
+      "maxDuration": 30
     }
-  ],
+  },
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
     {
       "src": "/optimize",
       "dest": "/api/index.py"
@@ -25,7 +25,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "/$1"
     }
   ]
 }

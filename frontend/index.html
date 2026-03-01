@@ -958,7 +958,9 @@ CA
     </footer>
 
     <script>
-        const API = 'http://localhost:8000';
+        const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:8000'
+            : '';  // same-origin on Vercel
         let strengthChart = null;
 
         function fmt(n) { return Number(n).toLocaleString('en-IN'); }
@@ -1009,7 +1011,7 @@ CA
                 const data = await res.json();
                 renderResults(data);
             } catch (e) {
-                alert('Error: ' + e.message + '\n\nMake sure the backend is running on http://localhost:8000');
+                alert('Error: ' + e.message + '\n\nIf running locally, make sure the backend is running on http://localhost:8000');
             } finally {
                 btn.disabled = false;
                 btnText.textContent = '⚡ Optimize Curing Cycle';
