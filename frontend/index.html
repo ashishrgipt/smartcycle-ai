@@ -757,6 +757,171 @@ CA
             background: rgba(245, 158, 11, 0.15);
             color: var(--warn);
         }
+
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 600px) {
+            nav {
+                padding: 0.9rem 1rem;
+            }
+
+            .logo {
+                font-size: 1rem;
+            }
+
+            .nav-badge {
+                font-size: 0.62rem;
+                padding: 0.25rem 0.55rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: clamp(1.5rem, 7vw, 2.2rem);
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .stat-pills {
+                gap: 0.5rem;
+            }
+
+            .stat-pill {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.7rem;
+            }
+
+            .main {
+                padding: 0 0.75rem 3rem;
+                gap: 1rem;
+            }
+
+            /* Form card no longer sticky on mobile */
+            .form-card {
+                position: static;
+                padding: 1.25rem;
+                border-radius: 16px;
+            }
+
+            /* Form rows stack to single column on phones */
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            /* Larger touch targets for inputs */
+            .form-group input,
+            .form-group select {
+                padding: 0.75rem 0.9rem;
+                font-size: 1rem;
+                /* prevents iOS zoom */
+            }
+
+            .btn-optimize {
+                padding: 1rem;
+                font-size: 1rem;
+                border-radius: 14px;
+                min-height: 52px;
+            }
+
+            /* Weather card wraps on small screens */
+            .weather-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+                padding: 1.25rem;
+            }
+
+            .weather-right {
+                gap: 1.5rem;
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .weather-stat {
+                text-align: left;
+            }
+
+            /* KPI grid 2-column on phones */
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+
+            .kpi-card {
+                padding: 1rem;
+            }
+
+            .kpi-card .kpi-val {
+                font-size: 1.3rem;
+            }
+
+            /* Compare rows stack vertically */
+            .compare-row {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .compare-arrow {
+                display: none;
+            }
+
+            .compare-after {
+                font-size: 0.95rem;
+            }
+
+            .compare-before {
+                font-size: 0.95rem;
+            }
+
+            /* Highlight banner */
+            .highlight-banner {
+                padding: 1rem 1.25rem;
+            }
+
+            /* API tabs scroll horizontally */
+            .api-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 0.25rem;
+            }
+
+            .api-tab {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .code-block {
+                font-size: 0.65rem;
+            }
+
+            /* Chart height on mobile */
+            .chart-card canvas {
+                max-height: 200px;
+            }
+
+            .placeholder {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        /* ── VERY SMALL PHONES (≤360px) ── */
+        @media (max-width: 360px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+        }
     </style>
 </head>
 
