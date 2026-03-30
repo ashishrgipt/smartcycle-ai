@@ -1,0 +1,1407 @@
+CA
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartCycle AI — Curing Optimization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #09090f;
+            --surface: #12121e;
+            --card: #1a1a2e;
+            --border: rgba(99, 102, 241, 0.18);
+            --accent: #6366f1;
+            --accent2: #22d3ee;
+            --accent3: #10b981;
+            --warn: #f59e0b;
+            --danger: #ef4444;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --glow: rgba(99, 102, 241, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15), transparent),
+                radial-gradient(ellipse 60% 40% at 90% 80%, rgba(34, 211, 238, 0.07), transparent);
+        }
+
+        /* ── NAV ── */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 2.5rem;
+            border-bottom: 1px solid var(--border);
+            background: rgba(9, 9, 15, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.03em;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid var(--border);
+            font-size: 0.72rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem 2.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.04em;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 560px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .stat-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-pill {
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .stat-pill .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .dot-green {
+            background: var(--accent3);
+            box-shadow: 0 0 6px var(--accent3);
+        }
+
+        .dot-blue {
+            background: var(--accent2);
+            box-shadow: 0 0 6px var(--accent2);
+        }
+
+        .dot-purple {
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+        }
+
+        /* ── LAYOUT ── */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── FORM CARD ── */
+        .form-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            position: sticky;
+            top: 80px;
+        }
+
+        .form-card h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.6rem 0.85rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        .form-group select option {
+            background: var(--card);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .btn-optimize {
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.01em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.35);
+            margin-top: 1.25rem;
+        }
+
+        .btn-optimize:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-optimize:active {
+            transform: translateY(0);
+        }
+
+        .btn-optimize:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* ── WEATHER CARD ── */
+        .weather-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.4s ease;
+        }
+
+        .weather-card.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .weather-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .weather-icon {
+            font-size: 2.8rem;
+        }
+
+        .weather-info h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .weather-info p {
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-transform: capitalize;
+            margin-top: 0.15rem;
+        }
+
+        .weather-right {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .weather-stat {
+            text-align: right;
+        }
+
+        .weather-stat .val {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .weather-stat .lbl {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        /* ── HIGHLIGHT BANNER ── */
+        .highlight-banner {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(34, 211, 238, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.4s ease 0.1s;
+        }
+
+        .highlight-banner.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .highlight-banner h3 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent2);
+            margin-bottom: 0.6rem;
+        }
+
+        .highlight-banner p {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.55;
+        }
+
+        .highlight-banner strong {
+            color: var(--accent2);
+        }
+
+        /* ── KPI GRID ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.4s ease 0.2s;
+        }
+
+        .kpi-grid.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        @media (max-width: 700px) {
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .kpi-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .kpi-card .kpi-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-card .kpi-val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .kpi-card .kpi-sub {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        .kpi-card .kpi-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        .badge-green {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent3);
+        }
+
+        .badge-blue {
+            background: rgba(34, 211, 238, 0.12);
+            color: var(--accent2);
+        }
+
+        .badge-purple {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+        }
+
+        .badge-warn {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warn);
+        }
+
+        /* ── CHART ── */
+        .chart-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.4s ease 0.3s;
+        }
+
+        .chart-card.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .chart-card h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .chart-card canvas {
+            max-height: 240px;
+        }
+
+        /* ── COMPARISON ── */
+        .compare-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.4s ease 0.35s;
+        }
+
+        .compare-card.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .compare-card h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+        }
+
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .compare-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .compare-before {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #f87171;
+        }
+
+        .compare-after {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent3);
+        }
+
+        .compare-arrow {
+            font-size: 1.2rem;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .compare-bar-wrap {
+            margin-top: 0.3rem;
+        }
+
+        .compare-bar-track {
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        .compare-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 1s ease;
+        }
+
+        .bar-before {
+            background: linear-gradient(90deg, #f87171, #ef4444);
+        }
+
+        .bar-after {
+            background: linear-gradient(90deg, #34d399, #10b981);
+        }
+
+        /* ── PLACEHOLDER ── */
+        .placeholder {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: var(--card);
+            border: 1px dashed var(--border);
+            border-radius: 20px;
+        }
+
+        .placeholder .icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .placeholder h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .placeholder p {
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+
+        /* ── LOADING ── */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.25);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            font-size: 0.78rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer span {
+            color: var(--accent);
+        }
+
+        /* ── DEMO BADGE ── */
+        .demo-note {
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            padding: 0.6rem 0.9rem;
+            font-size: 0.72rem;
+            color: var(--warn);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .demo-note.show {
+            display: block;
+        }
+
+        /* ── API EXPLORER ── */
+        .api-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.4s ease 0.4s;
+        }
+
+        .api-card.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .api-card h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .api-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .api-tab {
+            padding: 0.35rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+            transition: all 0.15s;
+        }
+
+        .api-tab.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .api-pane {
+            display: none;
+        }
+
+        .api-pane.active {
+            display: block;
+        }
+
+        .code-block {
+            background: #0d0d1a;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            color: #a5b4fc;
+            overflow-x: auto;
+            max-height: 260px;
+            overflow-y: auto;
+            white-space: pre;
+        }
+
+        .api-method {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 6px;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent3);
+            margin-bottom: 0.75rem;
+            font-family: monospace;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent3);
+            box-shadow: 0 0 6px var(--accent3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.4
+            }
+        }
+
+        .weather-source-badge {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-live {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent3);
+        }
+
+        .badge-demo {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warn);
+        }
+
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+                padding: 0 1rem 3rem;
+            }
+            .form-card {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .weather-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            .weather-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 0.9rem 1rem;
+            }
+            .logo {
+                font-size: 1rem;
+            }
+            .nav-badge {
+                font-size: 0.62rem;
+                padding: 0.25rem 0.55rem;
+            }
+            .hero {
+                padding: 2rem 1rem 1.5rem;
+            }
+            .hero h1 {
+                font-size: clamp(1.5rem, 7vw, 2.2rem);
+            }
+            .hero p {
+                font-size: 0.9rem;
+            }
+            .stat-pills {
+                gap: 0.5rem;
+            }
+            .stat-pill {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.7rem;
+            }
+            .main {
+                padding: 0 0.75rem 3rem;
+                gap: 1rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            .highlight-banner {
+                padding: 1.25rem;
+            }
+            .compare-row {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+                margin-bottom: 1.25rem;
+                background: rgba(255,255,255,0.02);
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            .compare-arrow {
+                display: none;
+            }
+            .api-tabs {
+                flex-wrap: wrap;
+            }
+            .api-tab {
+                flex: 1;
+                text-align: center;
+                min-width: 80px;
+            }
+
+            /* Form card no longer sticky on mobile */
+            .form-card {
+                position: static;
+                padding: 1.25rem;
+                border-radius: 16px;
+            }
+
+            /* Form rows stack to single column on phones */
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            /* Larger touch targets for inputs */
+            .form-group input,
+            .form-group select {
+                padding: 0.75rem 0.9rem;
+                font-size: 1rem;
+                /* prevents iOS zoom */
+            }
+
+            .btn-optimize {
+                padding: 1rem;
+                font-size: 1rem;
+                border-radius: 14px;
+                min-height: 52px;
+            }
+
+            /* Weather card wraps on small screens */
+            .weather-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+                padding: 1.25rem;
+            }
+
+            .weather-right {
+                gap: 1.5rem;
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .weather-stat {
+                text-align: left;
+            }
+
+            /* KPI grid 2-column on phones */
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+
+            .kpi-card {
+                padding: 1rem;
+            }
+
+            .kpi-card .kpi-val {
+                font-size: 1.3rem;
+            }
+
+            /* Compare rows stack vertically */
+            .compare-row {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .compare-arrow {
+                display: none;
+            }
+
+            .compare-after {
+                font-size: 0.95rem;
+            }
+
+            .compare-before {
+                font-size: 0.95rem;
+            }
+
+            /* Highlight banner */
+            .highlight-banner {
+                padding: 1rem 1.25rem;
+            }
+
+            /* API tabs scroll horizontally */
+            .api-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 0.25rem;
+            }
+
+            .api-tab {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .code-block {
+                font-size: 0.65rem;
+            }
+
+            /* Chart height on mobile */
+            .chart-card canvas {
+                max-height: 200px;
+            }
+
+            .placeholder {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        /* ── VERY SMALL PHONES (≤360px) ── */
+        @media (max-width: 360px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <span>SmartCycle AI</span>
+        </div>
+        <div class="nav-badge">HACKATHON MVP</div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <h1>Optimize Curing.<br /><span>Cut Cost. Save Energy.</span></h1>
+        <p>AI-powered curing cycle optimization for precast concrete yards. Reduce cycle time by 25%, energy by 15%, and
+            cost per element by 18%.</p>
+        <div class="stat-pills">
+            <div class="stat-pill">
+                <div class="dot dot-green"></div>24h → 19h Cycle Time
+            </div>
+            <div class="stat-pill">
+                <div class="dot dot-blue"></div>220 → 185 kWh Per Batch
+            </div>
+            <div class="stat-pill">
+                <div class="dot dot-purple"></div>₹32L/mo Net Gain
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- FORM -->
+        <div class="form-card">
+            <h2>⚙️ Yard Parameters</h2>
+
+            <div id="demoNote" class="demo-note">
+                ⚠️ Running in demo mode — add OPENWEATHER_API_KEY to backend .env for live weather.
+            </div>
+
+            <div class="form-group">
+                <label>Yard Location (City)</label>
+                <input id="location" type="text" value="Mumbai" placeholder="e.g. Mumbai, Chennai" />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Concrete Mix Grade</label>
+                    <select id="mixGrade">
+                        <option>M20</option>
+                        <option>M25</option>
+                        <option selected>M30</option>
+                        <option>M35</option>
+                        <option>M40</option>
+                        <option>M45</option>
+                        <option>M50</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Curing Method</label>
+                    <select id="curingMethod">
+                        <option value="steam">Steam</option>
+                        <option value="ambient">Ambient</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Target Demould Strength (MPa)</label>
+                <input id="targetStrength" type="number" value="20" min="5" max="50" />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Energy Cost (₹/kWh)</label>
+                    <input id="energyCost" type="number" value="8" step="0.5" />
+                </div>
+                <div class="form-group">
+                    <label>Labor Cost (₹/hr)</label>
+                    <input id="laborCost" type="number" value="150" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Material Cost/Element (₹)</label>
+                    <input id="materialCost" type="number" value="12000" />
+                </div>
+                <div class="form-group">
+                    <label>Elements/Month</label>
+                    <input id="elementsPerMonth" type="number" value="500" />
+                </div>
+            </div>
+
+            <button class="btn-optimize" id="optimizeBtn" onclick="runOptimize()">
+                <span id="btnText">⚡ Optimize Curing Cycle</span>
+                <div id="btnSpinner" class="spinner" style="display:none"></div>
+            </button>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel" id="rightPanel">
+
+            <!-- PLACEHOLDER -->
+            <div class="placeholder" id="placeholder">
+                <div class="icon">🏗️</div>
+                <h3>Ready to Optimize</h3>
+                <p>Fill in your yard parameters on the left and hit <strong>Optimize</strong> to get AI-powered curing
+                    recommendations.</p>
+            </div>
+
+            <!-- WEATHER -->
+            <div class="weather-card" id="weatherCard">
+                <div class="weather-left">
+                    <div class="weather-icon" id="weatherIcon">🌤️</div>
+                    <div class="weather-info">
+                        <h3 id="weatherTemp">--°C</h3>
+                        <p id="weatherDesc">--</p>
+                    </div>
+                </div>
+                <div class="weather-right">
+                    <div class="weather-stat">
+                        <div class="val" id="weatherHumidity">--%</div>
+                        <div class="lbl">Humidity</div>
+                    </div>
+                    <div class="weather-stat">
+                        <div class="val" id="weatherLocation">--</div>
+                        <div class="lbl">Location</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BANNER -->
+            <div class="highlight-banner" id="highlightBanner">
+                <h3>🤖 AI Recommendation</h3>
+                <p id="bannerText">--</p>
+            </div>
+
+            <!-- KPI GRID -->
+            <div class="kpi-grid" id="kpiGrid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Optimized Cycle</div>
+                    <div class="kpi-val" id="kpiHours">--h</div>
+                    <div class="kpi-sub">vs 24h baseline</div>
+                    <div class="kpi-badge badge-green" id="kpiHoursBadge">--</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Energy Saved</div>
+                    <div class="kpi-val" id="kpiEnergy">-- kWh</div>
+                    <div class="kpi-sub">per batch</div>
+                    <div class="kpi-badge badge-blue" id="kpiEnergyBadge">--</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Savings/Element</div>
+                    <div class="kpi-val" id="kpiSavingsEl">₹--</div>
+                    <div class="kpi-sub">per element produced</div>
+                    <div class="kpi-badge badge-purple">vs baseline</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Monthly Savings</div>
+                    <div class="kpi-val" id="kpiMonthly">₹--</div>
+                    <div class="kpi-sub" id="kpiAnnual">Annual: ₹--</div>
+                    <div class="kpi-badge badge-green">💰 Net Gain</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">CO₂ Saved</div>
+                    <div class="kpi-val" id="kpiCo2">-- kg</div>
+                    <div class="kpi-sub">per month</div>
+                    <div class="kpi-badge badge-green">🌱 Green Impact</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Throughput ↑</div>
+                    <div class="kpi-val" id="kpiThroughput">--%</div>
+                    <div class="kpi-sub">more elements/month</div>
+                    <div class="kpi-badge badge-blue">📈 Capacity</div>
+                </div>
+            </div>
+
+            <!-- STRENGTH CHART -->
+            <div class="chart-card" id="chartCard">
+                <h3>📈 Predicted Strength Curve (Maturity Model)</h3>
+                <canvas id="strengthChart"></canvas>
+            </div>
+
+            <!-- COMPARISON -->
+            <div class="compare-card" id="compareCard">
+                <h3>⚖️ Before vs After</h3>
+                <div id="compareRows"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        SmartCycle AI — Built for <span>Hackathon 2026</span> · Maturity Model: Nurse–Saul (IS 1199 / IS 456)
+    </footer>
+
+    <script>
+        const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:8000'
+            : '';  // same-origin on Vercel
+        let strengthChart = null;
+
+        function fmt(n) { return Number(n).toLocaleString('en-IN'); }
+        function fmtL(n) { return (n / 100000).toFixed(2) + 'L'; }
+
+        function weatherIcon(desc) {
+            desc = desc.toLowerCase();
+            if (desc.includes('rain') || desc.includes('drizzle')) return '🌧️';
+            if (desc.includes('cloud')) return '☁️';
+            if (desc.includes('clear') || desc.includes('sunny')) return '☀️';
+            if (desc.includes('fog') || desc.includes('mist')) return '🌫️';
+            if (desc.includes('thunder') || desc.includes('storm')) return '⛈️';
+            if (desc.includes('snow')) return '❄️';
+            return '🌤️';
+        }
+
+        async function runOptimize() {
+            const btn = document.getElementById('optimizeBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('btnSpinner');
+
+            // Gather inputs
+            const payload = {
+                location: document.getElementById('location').value.trim() || 'Mumbai',
+                mix_grade: document.getElementById('mixGrade').value,
+                target_strength_mpa: parseFloat(document.getElementById('targetStrength').value),
+                curing_method: document.getElementById('curingMethod').value,
+                energy_cost_per_kwh: parseFloat(document.getElementById('energyCost').value),
+                labor_cost_per_hour: parseFloat(document.getElementById('laborCost').value),
+                material_cost_per_element: parseFloat(document.getElementById('materialCost').value),
+                elements_per_month: parseInt(document.getElementById('elementsPerMonth').value),
+            };
+
+            btn.disabled = true;
+            btnText.textContent = 'Optimizing...';
+            spinner.style.display = 'flex';
+
+            try {
+                const res = await fetch(`${API}/optimize`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.detail || 'API error');
+                }
+                const data = await res.json();
+                renderResults(data);
+            } catch (e) {
+                alert('Error: ' + e.message + '\n\nIf running locally, make sure the backend is running on http://localhost:8000');
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = '⚡ Optimize Curing Cycle';
+                spinner.style.display = 'none';
+            }
+        }
+
+        function renderResults(d) {
+            // Hide placeholder
+            document.getElementById('placeholder').style.display = 'none';
+
+            // Demo note
+            if (d.weather_desc.includes('demo')) {
+                document.getElementById('demoNote').classList.add('show');
+            }
+
+            // Weather
+            const wc = document.getElementById('weatherCard');
+            document.getElementById('weatherIcon').textContent = weatherIcon(d.weather_desc);
+            document.getElementById('weatherTemp').textContent = d.current_temp_c + '°C';
+            document.getElementById('weatherDesc').textContent = d.weather_desc;
+            document.getElementById('weatherHumidity').textContent = d.humidity_pct + '%';
+            document.getElementById('weatherLocation').textContent = d.location;
+            wc.classList.add('show');
+
+            // Banner
+            document.getElementById('bannerText').innerHTML = d.recommendation.replace(
+                /(\d+h|\₹[\d,]+|\d+ kWh)/g, '<strong>$1</strong>'
+            );
+            document.getElementById('highlightBanner').classList.add('show');
+
+            // KPIs
+            const saved_h = (d.baseline_hours - d.optimized_hours).toFixed(1);
+            document.getElementById('kpiHours').textContent = d.optimized_hours + 'h';
+            document.getElementById('kpiHoursBadge').textContent = `↓ ${saved_h}h saved`;
+            document.getElementById('kpiEnergy').textContent = d.energy_saved_kwh + ' kWh';
+            document.getElementById('kpiEnergyBadge').textContent =
+                `↓ ${Math.round(d.energy_saved_kwh / d.baseline_kwh * 100)}% reduction`;
+            document.getElementById('kpiSavingsEl').textContent = '₹' + fmt(d.savings_per_element);
+            document.getElementById('kpiMonthly').textContent = '₹' + fmtL(d.monthly_savings);
+            document.getElementById('kpiAnnual').textContent = 'Annual: ₹' + fmtL(d.annual_savings);
+            document.getElementById('kpiCo2').textContent = fmt(d.co2_saved_kg_per_month) + ' kg';
+            document.getElementById('kpiThroughput').textContent = '+' + d.throughput_increase_pct + '%';
+            document.getElementById('kpiGrid').classList.add('show');
+
+            // Chart — strength vs hours
+            renderChart(d);
+            document.getElementById('chartCard').classList.add('show');
+
+            // Comparison table
+            renderCompare(d);
+            document.getElementById('compareCard').classList.add('show');
+        }
+
+        function buildStrengthCurve(d) {
+            // Recreate curve client-side using simplified hyperbolic model
+            const grade = document.getElementById('mixGrade').value.toUpperCase();
+            const params = {
+                M20: { Su: 20, M0: 200, k: 900 }, M25: { Su: 25, M0: 220, k: 950 },
+                M30: { Su: 30, M0: 240, k: 1000 }, M35: { Su: 35, M0: 260, k: 1050 },
+                M40: { Su: 40, M0: 280, k: 1100 }, M45: { Su: 45, M0: 300, k: 1150 },
+                M50: { Su: 50, M0: 320, k: 1200 },
+            };
+            const p = params[grade] || params['M30'];
+            const method = document.getElementById('curingMethod').value;
+            const effectiveTemp = d.current_temp_c + (method === 'steam' ? 20 : 0);
+            const hours = Array.from({ length: 49 }, (_, i) => i);
+            const strengths = hours.map(h => {
+                const maturity = Math.max((effectiveTemp - (-10)) * h - p.M0, 0);
+                if (maturity <= 0) return 0;
+                return Math.min(p.Su * maturity / (p.k + maturity), p.Su);
+            });
+            return { hours, strengths };
+        }
+
+        function renderChart(d) {
+            const ctx = document.getElementById('strengthChart').getContext('2d');
+            if (strengthChart) strengthChart.destroy();
+
+            const { hours, strengths } = buildStrengthCurve(d);
+            const target = parseFloat(document.getElementById('targetStrength').value);
+
+            strengthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [
+                        {
+                            label: 'Predicted Strength (MPa)',
+                            data: strengths,
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99,102,241,0.08)',
+                            borderWidth: 2.5,
+                            tension: 0.4, fill: true, pointRadius: 0,
+                        },
+                        {
+                            label: `Target Strength (${target} MPa)`,
+                            data: hours.map(() => target),
+                            borderColor: '#22d3ee', borderWidth: 1.5,
+                            borderDash: [6, 4], pointRadius: 0,
+                        },
+                        {
+                            label: `Optimized (${d.optimized_hours}h)`,
+                            data: hours.map(h => h === Math.round(d.optimized_hours) ? target : null),
+                            pointRadius: h => 0,
+                            borderColor: 'transparent', pointBackgroundColor: '#10b981',
+                            pointRadius: 7,
+                        },
+                        {
+                            label: `Baseline (${d.baseline_hours}h)`,
+                            data: hours.map(h => h === Math.round(d.baseline_hours) ? strengths[Math.round(d.baseline_hours)] : null),
+                            borderColor: 'transparent', pointBackgroundColor: '#f87171',
+                            pointRadius: 7,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: true,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 14 } },
+                        tooltip: { backgroundColor: '#1a1a2e', borderColor: '#6366f1', borderWidth: 1 },
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Hours', color: '#64748b', font: { size: 11 } },
+                            ticks: { color: '#64748b', maxTicksLimit: 12 },
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                        },
+                        y: {
+                            title: { display: true, text: 'Strength (MPa)', color: '#64748b', font: { size: 11 } },
+                            ticks: { color: '#64748b' },
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                        },
+                    },
+                },
+            });
+        }
+
+        function renderCompare(d) {
+            const rows = [
+                { label: 'Curing Duration', before: d.baseline_hours + ' hours', after: d.optimized_hours + ' hours', bPct: 100, aPct: Math.round(d.optimized_hours / d.baseline_hours * 100) },
+                { label: 'Energy per Batch', before: d.baseline_kwh + ' kWh', after: d.optimized_kwh + ' kWh', bPct: 100, aPct: Math.round(d.optimized_kwh / d.baseline_kwh * 100) },
+                { label: 'Cost per Element', before: '₹' + fmt(d.baseline_cost_per_element), after: '₹' + fmt(d.optimized_cost_per_element), bPct: 100, aPct: Math.round(d.optimized_cost_per_element / d.baseline_cost_per_element * 100) },
+                { label: 'Monthly Energy Cost', before: '₹' + fmtL(d.baseline_kwh * parseFloat(document.getElementById('energyCost').value) * parseInt(document.getElementById('elementsPerMonth').value)), after: '₹' + fmtL(d.optimized_kwh * parseFloat(document.getElementById('energyCost').value) * parseInt(document.getElementById('elementsPerMonth').value)), bPct: 100, aPct: Math.round(d.optimized_kwh / d.baseline_kwh * 100) },
+            ];
+
+            const container = document.getElementById('compareRows');
+            container.innerHTML = rows.map(r => `
+        <div class="compare-row">
+          <div>
+            <div class="compare-label">${r.label}</div>
+            <div class="compare-before">${r.before}</div>
+            <div class="compare-bar-wrap">
+              <div class="compare-bar-track" style="width:100%">
+                <div class="compare-bar-fill bar-before" style="width:${r.bPct}%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="compare-arrow">→</div>
+          <div>
+            <div class="compare-label">&nbsp;</div>
+            <div class="compare-after">${r.after}</div>
+            <div class="compare-bar-wrap">
+              <div class="compare-bar-track">
+                <div class="compare-bar-fill bar-after" style="width:${r.aPct}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        // Allow Enter key to trigger optimization
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !document.getElementById('optimizeBtn').disabled) runOptimize();
+        });
+    </script>
+</body>
+
+</html>
