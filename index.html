@@ -759,44 +759,91 @@ CA
         }
 
         /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+                padding: 0 1rem 3rem;
+            }
+            .form-card {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .weather-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            .weather-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
         @media (max-width: 600px) {
             nav {
                 padding: 0.9rem 1rem;
             }
-
             .logo {
                 font-size: 1rem;
             }
-
             .nav-badge {
                 font-size: 0.62rem;
                 padding: 0.25rem 0.55rem;
             }
-
             .hero {
                 padding: 2rem 1rem 1.5rem;
             }
-
             .hero h1 {
                 font-size: clamp(1.5rem, 7vw, 2.2rem);
             }
-
             .hero p {
                 font-size: 0.9rem;
             }
-
             .stat-pills {
                 gap: 0.5rem;
             }
-
             .stat-pill {
                 font-size: 0.7rem;
                 padding: 0.3rem 0.7rem;
             }
-
             .main {
                 padding: 0 0.75rem 3rem;
                 gap: 1rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            .highlight-banner {
+                padding: 1.25rem;
+            }
+            .compare-row {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+                margin-bottom: 1.25rem;
+                background: rgba(255,255,255,0.02);
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            .compare-arrow {
+                display: none;
+            }
+            .api-tabs {
+                flex-wrap: wrap;
+            }
+            .api-tab {
+                flex: 1;
+                text-align: center;
+                min-width: 80px;
             }
 
             /* Form card no longer sticky on mobile */
